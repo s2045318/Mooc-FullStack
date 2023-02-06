@@ -5,17 +5,37 @@ const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
-  console.log("Application started")
+  const [total, setTotal] = useState(0)
+
+
+
+  const increaseGood = () => {
+    setGood(good + 1)
+    setTotal(total + 1)
+    console.log('good increased')
+  }
+  const increaseNeutral = () => {
+    setNeutral(neutral + 1)
+    setTotal(total + 1)
+    console.log('good increased')
+  }
+  const increaseBad = () => {
+    setBad(bad + 1)
+    setTotal(total + 1)
+    console.log('good increased')
+  }
+  console.log('application (re)started')
+//  ,  setAvg(findavg(good,bad,total))
   return (
     <div>
       <h1>give feedback</h1>
-      <button onClick={() => setGood(good + 1)}>
+      <button onClick={increaseGood}>
         good
       </button>
-      <button onClick={() => setNeutral(neutral + 1)}>
+      <button onClick={increaseNeutral}>
         neutral
       </button>
-      <button onClick={() => setBad(bad + 1)}>
+      <button onClick={increaseBad}>
         bad
       </button>
 
@@ -23,11 +43,15 @@ const App = () => {
       <p>
         good {good} <br/>
         neutral {neutral} <br/>
-        bad {bad}
+        bad {bad} <br/>
+        all {total} <br/>
+        average {findAverage(good,bad,total)} <br/>
+        positive {findPositive(good, total)} %
       </p>
     </div>
   )
 }
-
+const findAverage = (good,bad,total) => (good - bad) / (total)
+const findPositive = (good,total) => 100 * good / total
 
 export default App
