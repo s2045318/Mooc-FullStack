@@ -16,13 +16,18 @@ const App = () => {
   console.log(votes)
   const [selected, setSelected] = useState(0)
   const Vote = () => { 
-    addVote(prevVotes => {
-      const newVotes = [...prevVotes];
+      const newVotes = [...votes];
       newVotes[selected] += 1;
-      return newVotes;
-    });
+      findNewMostPopular()   
+      addVote(newVotes)
+           
 }
-
+  const [mostPopular, setMostPopular] = useState(0)
+  const findNewMostPopular = () => {
+    let i = votes.indexOf(Math.max(...votes));
+    setMostPopular(i)
+    console.log("most popular is:", i)
+  }
   const updateSelected = () => {
     const newIndex = Math.floor(Math.random() * anecdotes.length)
     console.log(newIndex)
@@ -30,10 +35,14 @@ const App = () => {
   }
   return (
     <div>
+      <h2>Anecdote of day</h2>
       {anecdotes[selected]} <br/>
       <p>Votes {votes[selected]}</p>
       <Button onClick={updateSelected} name = 'next anecdote'/>
       <Button onClick={Vote} name = 'vote'/>
+      <h2>Anecdote of day</h2>
+      <p>{anecdotes[mostPopular]}</p>
+      <p>votes {votes[mostPopular]}</p>
     </div>
   )
 }
