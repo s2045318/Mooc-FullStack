@@ -1,40 +1,5 @@
 import { useState } from 'react'
 
-// a proper place to define a component
-const Statistics = (props) => {
-
-  const good = props.good
-  const bad = props.bad
-  const neutral = props.neutral
-  const total = good + bad + neutral
-
-  const findAverage = (good - bad) / (total)
-  const findPositive = 100 * good / total
-  // Display no statistics if no feedback is given
-  if (total == 0) { 
-    console.log('page started')
-    return (
-      <div>
-      <h2>No feedback given</h2>
-      </div>
-   )
-  } else {
-    console.log('page updated')
-    return (
-      <div>
-        <h2>Statistics</h2>
-        <p>good {good} <br/>
-        bad {bad}<br/>
-        neutral {neutral} <br/>
-        all {total} <br/>
-        average {findAverage} <br/>
-        positive {findPositive} %
-        </p>
-      </div>
-    ) 
-  }
-}
-
 const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
@@ -50,20 +15,69 @@ const App = () => {
   return (
     <div>
       <h1>give feedback</h1>
-        <button onClick={increaseGood}>
-          good
-        </button>
-        <button onClick={increaseNeutral}>
-          neutral
-        </button>
-        <button onClick={increaseBad}>
-          bad
-        </button>
+        <Button onClick={increaseGood} name = 'good'/>
+        <Button onClick={increaseBad} name = 'bad'/>
+        <Button onClick={increaseNeutral} name = 'neutral'/>
         <h1>statistics</h1>
         <Statistics good={good} bad={bad} neutral={neutral}/>
       </div>
   )
 }
+const Statistics = (props) => {
 
+  const good = props.good
+  const bad = props.bad
+  const neutral = props.neutral
+  const total = good + bad + neutral
+
+  const average = (good - bad) / (total)
+  const positive = 100 * good / total
+  // Display no statistics if no feedback is given
+  if (total == 0) { 
+    console.log('page started')
+    return (
+      <div>
+      <h2>No feedback given</h2>
+      </div>
+   )
+  } else {
+    console.log('page updated')
+    return (
+      <div>
+        <h2>Statistics</h2>
+        <StatisticLine text="good" value ={good} />
+        <StatisticLine text="bad" value ={bad} />
+        <StatisticLine text="neutral" value ={neutral} />
+        <StatisticLine text="all" value ={total} />
+        <StatisticLine text="average" value = {average} />
+        <StatisticLine text="positive" value = {positive} /> 
+      </div>
+    ) 
+  }
+}
+
+
+const StatisticLine = (props) => {
+  if (props.text == "positive"){ 
+    return(
+    <p>
+    {props.text} {props.value} %
+    </p>
+    )
+  }
+  return (
+    <p>
+    {props.text} {props.value} <br/>
+    </p>
+  )
+}
+
+const Button = (props) => {
+  return (
+    <button onClick={props.onClick}>
+      {props.name}
+    </button>
+  )
+}
 
 export default App
