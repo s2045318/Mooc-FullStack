@@ -14,7 +14,11 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
-  const unpadeSelected = () => setSelected (Math.random(0,length(anecdotes)))
+  const unpadeSelected = () => {
+    const newIndex = Math.floor(Math.random(anecdotes.length) * 10) - 1
+    console.log(newIndex)
+    setSelected(newIndex)
+  }
   return (
     <div>
       {anecdotes[selected]} <br/>
