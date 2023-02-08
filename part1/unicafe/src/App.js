@@ -10,6 +10,7 @@ const Statistics = (props) => {
 
   const findAverage = (good - bad) / (total)
   const findPositive = 100 * good / total
+  // Display no statistics if no feedback is given
   if (total == 0) { 
     console.log('page started')
     return (
