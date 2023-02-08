@@ -1,6 +1,7 @@
 import { useState } from 'react'
 
 const App = () => {
+  
   const anecdotes = [
     'If it hurts, do it more often.',
     'Adding manpower to a late software project makes it later!',
@@ -13,10 +14,11 @@ const App = () => {
   ]
    
   const [selected, setSelected] = useState(0)
-
+  const unpadeSelected = () => setSelected(selected+1)
   return (
     <div>
-      {anecdotes[selected]}
+      {anecdotes[selected]} <br/>
+      <button onClick={ unpadeSelected }>next anecdote</button>
     </div>
   )
 }
