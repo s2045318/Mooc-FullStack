@@ -37,12 +37,7 @@ const Course = ({course}) => {
 const Content = ({parts}) => {
   
   const result = parts.map(part => <Part key={part.id} part={part} />)
-  const total = (parts.map(part => part.exercises)).reduce(add, 0)
-
-  function add(accumulator, a) {
-    return accumulator + a;
-  }
-  console.log("total: ", total)
+  const total = parts.reduce((s, p) => s + p.exercises,0)
   return (
     <div>
       {result}
