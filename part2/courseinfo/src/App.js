@@ -27,7 +27,6 @@ const App = () => {
 const Course = ({course}) => {
   const title = course.name
   const parts = course.parts
-
   return (
     <div>
       <Header title={title}/>
@@ -36,19 +35,23 @@ const Course = ({course}) => {
   )
 }
 const Content = ({parts}) => {
-  console.log("Content Reached")
+  
   const result = parts.map(part => <Part key={part.id} part={part} />)
-  console.log(" boo")
+  const total = (parts.map(part => part.exercises)).reduce(add, 0)
+
+  function add(accumulator, a) {
+    return accumulator + a;
+  }
+  console.log("total: ", total)
   return (
     <div>
       {result}
+      <b>total of {total} exercises</b> 
     </div>
   )
 }
 
 const Part = ({part}) => {
-  console.log(" reached")
-  console.log(part.name)
   return (
     <p>{part.name} {part.exercises}</p>
   )
