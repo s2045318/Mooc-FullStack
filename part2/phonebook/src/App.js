@@ -2,40 +2,45 @@ import { useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas'}
+    { name: 'Arto Hellas', number : "040-1234567"}
   ]) 
-  const [newContact, setNewContact] = useState('')
+  const [newContactName, setNewContactName] = useState('')
+  const [newContactNumber, setNewContactNumber] = useState('')
   const addContact = (event) => {
     event.preventDefault()
     const contact = {
-      name : newContact
+      name : newContactName,
+      number : newContactNumber
     }
     if (persons.some(value => value.name === contact.name)) {
       console.log("already in my records");
-      setNewContact('');
+      setNewContactName('')
+      setNewContactNumber('')
       alert(`${contact.name} is already added to the phonebook`)
     }
     else {
       setPersons(persons.concat(contact))
-      setNewContact('')
+      setNewContactName('')
+      setNewContactNumber('')
       console.log(persons)
     }
   }
-  const handleNewContactChange = (event) => {
+  const handleNewContactNameChange = (event) => {
     console.log(event.target.value)
-    setNewContact(event.target.value)
+    setNewContactName(event.target.value)
   }
+  const handleNewContactNumberChange = (event) => {
+    console.log(event.target.value)
+    setNewContactNumber(event.target.value)
+  }
+
+
   return (
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={addContact}>
-        <div>
-          name: 
-          <input  
-             value={newContact}
-             onChange={handleNewContactChange}
-          />
-        </div>
+        <div>name: <input value={newContactName} onChange={handleNewContactNameChange}/></div>
+        <div>number: <input value = {newContactNumber} onChange ={handleNewContactNumberChange}/></div>
         <div>
           <button type="submit">add</button>
         </div>
@@ -48,9 +53,10 @@ const App = () => {
 
 const Person = ({person}) => {
   const name = person.name
+  const number = person.number
   return (
     <>
-      <p>{name} <br/></p>
+      <p>{name} {number}<br/></p>
     </>
   )
 }
