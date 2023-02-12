@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import axios from 'axios'
+import Contact from './components/Contact'
 
 
 const App = () => {
@@ -21,7 +22,8 @@ const App = () => {
     event.preventDefault()
     const contact = {
       name : newContactName,
-      number : newContactNumber
+      number : newContactNumber,
+      id : persons.length + 1
     }
     if (persons.some(value => value.name === contact.name)) {
       console.log("already in my records");
@@ -57,20 +59,11 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map(contact => <Person person={contact} />)}
+      {persons.map(contact => <Contact key={contact.id} name={contact.name} number={contact.number}/>)}
     </div>
   )
 }
 
-const Person = ({person}) => {
-  const name = person.name
-  const number = person.number
-  return (
-    <>
-      <p>{name} {number}<br/></p>
-    </>
-  )
-}
 
 
 
