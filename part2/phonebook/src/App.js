@@ -7,7 +7,6 @@ const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newContact, setNewContact] = useState(['',''])
 
-
   useEffect(() => {
     console.log('effect')
     axios
@@ -16,7 +15,6 @@ const App = () => {
         console.log('promise fullfilled')
         setPersons(response.data)})
   },[])
-  console.log('render ', persons.length)
 
   const addContact = (event) => {
     event.preventDefault()
@@ -29,17 +27,17 @@ const App = () => {
       console.log("already in my records");
       setNewContact(['',''])
       alert(`${contact.name} is already added to the phonebook`)
+      return 
     }
-    else {
-      axios
-        .post('http://localhost:3001/persons', contact)
-        .then(response => {
-        setPersons(persons.concat(response.data))
-        setNewContact(['',''])
-        })
-      }
-    
+    axios
+      .post('http://localhost:3001/persons', contact)
+      .then(response => {
+      setPersons(persons.concat(response.data))
+      setNewContact(['',''])
+      })
+
   }
+
   const handleNewContactNameChange = (event) => {
     console.log(event.target.value)
     setNewContact([event.target.value,newContact[1]])
@@ -53,18 +51,23 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addContact}>
-        <div>name: <input value={newContact[0]} onChange={handleNewContactNameChange}/></div>
-        <div>number: <input value = {newContact[1]} onChange ={handleNewContactNumberChange}/></div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <Form newContact={newContact} handleNewContactNameChange={handleNewContactNameChange}
+            handleNewContactNumberChange={handleNewContactNumberChange } addContact={addContact}/>
       <h2>Numbers</h2>
-      {persons.map(contact => <Contact key={contact.id} name={contact.name} number={contact.number}/>)}
+      {persons.map(contact => <Contact key={contact.id} name={contact.name} number={contact.number} />)}
     </div>
   )
 }
+
+const Form = ({ newContact, handleNewContactNameChange, handleNewContactNumberChange, addContact }) => (
+  <form onSubmit={addContact}>
+    <div>name: <input value={newContact[0]} onChange={handleNewContactNameChange}/></div>
+    <div>number: <input value={newContact[1]} onChange={handleNewContactNumberChange}/></div>
+    <div>
+      <button type="submit">add</button>
+    </div>
+  </form>
+)
 
 
 
