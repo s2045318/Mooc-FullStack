@@ -5,8 +5,8 @@ import Contact from './components/Contact'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
-  const [newContactName, setNewContactName] = useState('')
-  const [newContactNumber, setNewContactNumber] = useState('')
+  const [newContact, setNewContact] = useState(['',''])
+
 
   useEffect(() => {
     console.log('effect')
@@ -21,30 +21,32 @@ const App = () => {
   const addContact = (event) => {
     event.preventDefault()
     const contact = {
-      name : newContactName,
-      number : newContactNumber,
+      name : newContact[0],
+      number : newContact[1],
       id : persons.length + 1
     }
     if (persons.some(value => value.name === contact.name)) {
       console.log("already in my records");
-      setNewContactName('')
-      setNewContactNumber('')
+      setNewContact(['',''])
       alert(`${contact.name} is already added to the phonebook`)
     }
     else {
-      setPersons(persons.concat(contact))
-      setNewContactName('')
-      setNewContactNumber('')
-      console.log(persons)
-    }
+      axios
+        .post('http://localhost:3001/persons', contact)
+        .then(response => {
+        setPersons(persons.concat(response.data))
+        setNewContact(['',''])
+        })
+      }
+    
   }
   const handleNewContactNameChange = (event) => {
     console.log(event.target.value)
-    setNewContactName(event.target.value)
+    setNewContact([event.target.value,newContact[1]])
   }
   const handleNewContactNumberChange = (event) => {
     console.log(event.target.value)
-    setNewContactNumber(event.target.value)
+    setNewContact([newContact[0],event.target.value])
   }
 
 
@@ -52,8 +54,8 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={addContact}>
-        <div>name: <input value={newContactName} onChange={handleNewContactNameChange}/></div>
-        <div>number: <input value = {newContactNumber} onChange ={handleNewContactNumberChange}/></div>
+        <div>name: <input value={newContact[0]} onChange={handleNewContactNameChange}/></div>
+        <div>number: <input value = {newContact[1]} onChange ={handleNewContactNumberChange}/></div>
         <div>
           <button type="submit">add</button>
         </div>
