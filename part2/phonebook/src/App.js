@@ -20,8 +20,7 @@ const App = () => {
     event.preventDefault()
     const contact = {
       name : newContact[0],
-      number : newContact[1],
-      id : persons.length + 1
+      number : newContact[1]
     }
     if (persons.some(value => value.name === contact.name)) {
       console.log("already in my records");
@@ -48,14 +47,23 @@ const App = () => {
     console.log(event.target.value)
     setNewContact([newContact[0],event.target.value])
   }
-
+  const handleDelete = (id,name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      personService.deletePerson(id)
+      personService
+        .getAll()
+        .then(personsRemaining => setPersons(personsRemaining))
+        console.log(`person number ${id} has been deleted`)
+    }
+ 
+  }
   return (
     <div>
       <h2>Phonebook</h2>
       <Form newContact={newContact} handleNewContactNameChange={handleNewContactNameChange}
             handleNewContactNumberChange={handleNewContactNumberChange } addContact={addContact}/>
       <h2>Numbers</h2>
-      {persons.map(contact => <Contact id={contact.id} name={contact.name} deletePerson = {personService.deletePerson()} number={contact.number} />)}
+      {persons.map(contact => <Contact id={contact.id} name={contact.name} handleDelete={handleDelete} number={contact.number} />)}
     </div>
   )
 }
@@ -73,13 +81,10 @@ const Form = ({ newContact, handleNewContactNameChange, handleNewContactNumberCh
 const Contact = (props) => {
   const name = props.name
   const number = props.number
-  const handleDelete = () => {
-      personService.deletePerson(props.id)
-  }
+  const id = props.id
+  console.log(id)
   return (
-      <p>{name} 
-          {number} 
-          <button onClick={handleDelete}>delete</button>
+      <p>{name} {number}  <button onClick={() => props.handleDelete(id,name)}>delete</button>
           <br/>
       </p>
   )

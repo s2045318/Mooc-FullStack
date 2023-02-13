@@ -17,9 +17,10 @@ const update  = (id,newObject) => {
 }
 
 const deletePerson = (id) => {
-    console.log('beginning deletion process')
-    axios.delete(`http://localhost:3001/services/persons/${id}`)
-    .then(() => console.log(`delete of ${id} successfull`));
+    console.log(`beginning deletion process of ${id}`)
+    axios.delete(`http://localhost:3001/persons/${id}`)
+    .then(() => console.log(`delete of ${id} successfull`))
+    .catch((error => console.error(`Error in deletion of ${id}`)))
 }
 export default {
     getAll,
