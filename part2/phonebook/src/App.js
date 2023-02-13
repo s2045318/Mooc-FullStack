@@ -1,6 +1,5 @@
 import {useState, useEffect} from 'react'
 import axios from 'axios'
-import Contact from './components/Contact'
 import personService from './services/persons'
 
 
@@ -30,7 +29,6 @@ const App = () => {
       alert(`${contact.name} is already added to the phonebook`)
       return 
     }
-
     personService
       .create(contact)
       .then(returnedPerson => {
@@ -41,6 +39,7 @@ const App = () => {
 
   }
 
+
   const handleNewContactNameChange = (event) => {
     console.log(event.target.value)
     setNewContact([event.target.value,newContact[1]])
@@ -50,14 +49,13 @@ const App = () => {
     setNewContact([newContact[0],event.target.value])
   }
 
-  
   return (
     <div>
       <h2>Phonebook</h2>
       <Form newContact={newContact} handleNewContactNameChange={handleNewContactNameChange}
             handleNewContactNumberChange={handleNewContactNumberChange } addContact={addContact}/>
       <h2>Numbers</h2>
-      {persons.map(contact => <Contact key={contact.id} name={contact.name} number={contact.number} />)}
+      {persons.map(contact => <Contact id={contact.id} name={contact.name} deletePerson = {personService.deletePerson()} number={contact.number} />)}
     </div>
   )
 }
@@ -72,6 +70,20 @@ const Form = ({ newContact, handleNewContactNameChange, handleNewContactNumberCh
   </form>
 )
 
+const Contact = (props) => {
+  const name = props.name
+  const number = props.number
+  const handleDelete = () => {
+      personService.deletePerson(props.id)
+  }
+  return (
+      <p>{name} 
+          {number} 
+          <button onClick={handleDelete}>delete</button>
+          <br/>
+      </p>
+  )
+} 
 
 
 
