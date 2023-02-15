@@ -1,11 +1,11 @@
 import {useState, useEffect} from 'react'
-import axios from 'axios'
 import personService from './services/persons'
 
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newContact, setNewContact] = useState(['',''])
+  const [operationMessage, setoperationMessage] = useState(null)
 
   useEffect(() => {
     console.log('effect')
@@ -16,7 +16,7 @@ const App = () => {
         setPersons(intialPersons)})
   },[])
 
-  const addContact = (event) => {
+  const handleAdd = (event) => {
     event.preventDefault()
     const contact = {
       name : newContact[0],
@@ -33,9 +33,15 @@ const App = () => {
       .then(returnedPerson => {
         setPersons(persons.concat(returnedPerson))
         setNewContact(['',''])
-        console.log('boo!! Note added')
+        console.log('boo!! person added')
       })
-
+    setoperationMessage(
+        `Added '${contact.name}'`
+    )
+    setTimeout(() => {
+      setoperationMessage(null)
+      }, 5000
+    )
   }
 
 
@@ -49,19 +55,25 @@ const App = () => {
   }
   const handleDelete = (id,name) => {
     if (window.confirm(`Delete ${name}?`)) {
-      personService.deletePerson(id)
       personService
-        .getAll()
-        .then(personsRemaining => setPersons(personsRemaining))
-        console.log(`person number ${id} has been deleted`)
+        .deletePerson(id)
+      setPersons(persons.filter(person => person.id !== id))
+      console.log(`person number ${id} has been deleted`)
+    
+      setoperationMessage(
+        `Deleted '${name}'`
+      )
+      setTimeout(() => {
+        setoperationMessage(null)
+      }, 5000)
     }
- 
   }
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={operationMessage}/>
       <Form newContact={newContact} handleNewContactNameChange={handleNewContactNameChange}
-            handleNewContactNumberChange={handleNewContactNumberChange } addContact={addContact}/>
+            handleNewContactNumberChange={handleNewContactNumberChange } addContact={handleAdd}/>
       <h2>Numbers</h2>
       {persons.map(contact => <Contact id={contact.id} name={contact.name} handleDelete={handleDelete} number={contact.number} />)}
     </div>
@@ -70,7 +82,7 @@ const App = () => {
 
 const Form = ({ newContact, handleNewContactNameChange, handleNewContactNumberChange, addContact }) => (
   <form onSubmit={addContact}>
-    <div>name: <input value={newContact[0]} onChange={handleNewContactNameChange}/></div>
+    <div>name: <input value={newContact[0]} onChange={handleNewContactNameChange}/></div> 
     <div>number: <input value={newContact[1]} onChange={handleNewContactNumberChange}/></div>
     <div>
       <button type="submit">add</button>
@@ -90,6 +102,25 @@ const Contact = (props) => {
   )
 } 
 
+const Notification = ({ message }) => {
+  const notStyle ={
+  color: 'green',
+  background: 'lightgrey',
+  fontSize: 20,
+  borderStyle: 'solid',
+  borderRadius: 5,
+  padding: 10,
+  marginBottom: 10
+  }
+  if (message === null) {
+    return null
+  }
 
+  return (
+    <div style = {notStyle}>
+      {message}
+    </div>
+  )
+}
 
 export default App
