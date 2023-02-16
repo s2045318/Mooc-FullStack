@@ -32,7 +32,6 @@ const App = () => {
   
   return (
     <div>
-      <p>Hello World</p>
       <Form handleSearch={handleSearch} handleSVChange = {handleSVChange} sv = {sv}/>
       <Results countries={countries}/>
     </div>
@@ -53,7 +52,6 @@ const Results = ({countries}) => {
       width : 128
     }
   
-
   console.log(countries.length)
   if (countries.length == 0) return (<p>No matches found</p>)
   if (countries.length > 5) return (<p>Too many matches, specify another filter</p>)
@@ -73,7 +71,7 @@ const Results = ({countries}) => {
   }
   return (
     <div>
-      {countries.map(country =><p>{country.name}</p>)}
+      {countries.map(country =><p>{country.name}</p> )}
     </div>
   )
 }
