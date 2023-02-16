@@ -28,17 +28,15 @@ const App = () => {
       })
   }
 
-
-  
   return (
     <div>
       <Form handleSearch={handleSearch} handleSVChange = {handleSVChange} sv = {sv}/>
-      <Results countries={countries}/>
+      <Results countries={countries}  handleSearch={handleSearch}/>
     </div>
   );
   }
 
-const Form = ({handleSearch, handleSVChange, sv}) => {
+const Form = ({handleSVChange, sv}) => {
   return (
     <form >
       <div>find countries <input value={sv} onChange={handleSVChange}/></div> 
@@ -47,7 +45,7 @@ const Form = ({handleSearch, handleSVChange, sv}) => {
   )
 }
 
-const Results = ({countries}) => {
+const Results = ({countries, handleSearch}) => {
   const imgStyle = {
       width : 128
     }
@@ -58,7 +56,7 @@ const Results = ({countries}) => {
   if (countries.length == 1) {
     const country = countries[0]
     console.log(country.name)
-    console.log("flag url--", country.flag[0])
+    console.log("flag url--", country.flag)
     return (
       <div>
         <h1>{country.name}</h1>
@@ -71,7 +69,11 @@ const Results = ({countries}) => {
   }
   return (
     <div>
-      {countries.map(country =><p>{country.name}</p> )}
+      {countries.map(country =>(
+        <>
+         <p>{country.name} <button onClick={() => handleSearch(country.name)}>show</button> </p>
+        </>  
+      ) )}
     </div>
   )
 }
