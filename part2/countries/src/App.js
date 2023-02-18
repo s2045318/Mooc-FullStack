@@ -1,9 +1,11 @@
 import countryService from './services/REST_Countries'
+import weatherService from './services/Weather_API'
 import {useState, useEffect} from 'react'
 
 const App = () => {
   const [sv, setSV] = useState('');
   const [countries, setCountries] = useState([])
+  const [weather, setWeather] = useState()
 
   const handleSVChange = (event) => {
     console.log(event.target.value)
@@ -11,6 +13,15 @@ const App = () => {
     handleSearch(event.target.value)
   }
   
+  const handleWeatherChange = (place) => {
+    weatherService
+      .get(place)
+      .then(newWeather => {
+        console.log('new weather: ', newWeather)
+        setWeather(newWeather)
+      })
+      .catch(error => console.log('Error fetching weather data', error));
+  }
   const handleSearch = (query) => {
     countryService
       .getAll()
@@ -23,15 +34,13 @@ const App = () => {
         console.log('Succesfully updated countries')
 
       })
-      .catch(error => {
-        console.log('Not able to access the REST API')
-      })
+      .catch(console.log('Not able to access the REST API'))
   }
 
   return (
     <div>
       <Form handleSearch={handleSearch} handleSVChange = {handleSVChange} sv = {sv}/>
-      <Results countries={countries}  handleSearch={handleSearch}/>
+      <Results countries={countries}  handleSearch={handleSearch} handleWeatherChange={handleWeatherChange} weather={weather}/>
     </div>
   );
   }
@@ -45,7 +54,7 @@ const Form = ({handleSVChange, sv}) => {
   )
 }
 
-const Results = ({countries, handleSearch}) => {
+const Results = ({countries, handleSearch, handleWeatherChange, weather}) => {
   const imgStyle = {
       width : 128
     }
@@ -56,7 +65,7 @@ const Results = ({countries, handleSearch}) => {
   if (countries.length == 1) {
     const country = countries[0]
     console.log(country.name)
-    console.log("flag url--", country.flag)
+    handleWeatherChange(country.capital)
     return (
       <div>
         <h1>{country.name}</h1>
@@ -64,6 +73,7 @@ const Results = ({countries, handleSearch}) => {
         <p>area: {country.area}</p>
         <Languages languages={country.languages}/>
         <img src={country.flag} style={imgStyle}></img>
+        <p>temperature (celcius){weather.current}</p>
       </div>
     )
   }
