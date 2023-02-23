@@ -14,13 +14,13 @@ const create = newObject => {
 }
 
 const update  = (id,newObject) => {
-    const request =  axios.put('${baseUrl}/${id}', newObject)
+    const request =  axios.put(`${baseurl}/${id}`, newObject)
     return request.then(response => response.data)
 }
 
 const deletePerson = (id) => {
-    console.log(`beginning deletion process of ${id}`)
-    axios.delete(`http://localhost:3001/persons/${id}`)
+    console.log(`${baseurl}/${id}`)
+    axios.delete(`${baseurl}/${id}`)
     .then(() => console.log(`delete of ${id} successfull`))
     .catch((error => console.error(`Error in deletion of ${id}`)))
 }

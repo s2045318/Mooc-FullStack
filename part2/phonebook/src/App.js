@@ -70,7 +70,7 @@ const App = () => {
   }
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h2>Jesse's Phonebook</h2>
       <Notification message={operationMessage}/>
       <Form newContact={newContact} handleNewContactNameChange={handleNewContactNameChange}
             handleNewContactNumberChange={handleNewContactNumberChange } addContact={handleAdd}/>
