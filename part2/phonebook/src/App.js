@@ -34,16 +34,10 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         setNewContact(['',''])
         console.log('boo!! person added')
-        setoperationMessage(
-          `Added '${contact.name}'`
-      )
-      }) 
-      .catch(error => {
-        // this is the way to access the error message
-        console.log(error.response.data.error)
-        setoperationMessage(error.response.data.error)
       })
-
+    setoperationMessage(
+        `Added '${contact.name}'`
+    )
     setTimeout(() => {
       setoperationMessage(null)
       }, 5000
@@ -76,7 +70,7 @@ const App = () => {
   }
   return (
     <div>
-      <h2>Jesse's Phonebook</h2>
+      <h2>Phonebook</h2>
       <Notification message={operationMessage}/>
       <Form newContact={newContact} handleNewContactNameChange={handleNewContactNameChange}
             handleNewContactNumberChange={handleNewContactNumberChange } addContact={handleAdd}/>
